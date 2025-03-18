@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.ejemplo</groupId>
+  <artifactId>jmetal-var</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
+  <name>jMetal Variability</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>22</maven.compiler.source>
+    <maven.compiler.target>22</maven.compiler.target>
+    <jmetal.version>6.6</jmetal.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+      <dependency>
+        <groupId>org.uma.jmetal</groupId>
+        <artifactId>jmetal-core</artifactId>
+        <version>${jmetal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uma.jmetal</groupId>
+        <artifactId>jmetal-algorithm</artifactId>
+        <version>${jmetal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uma.jmetal</groupId>
+        <artifactId>jmetal-problem</artifactId>
+        <version>${jmetal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uma.jmetal</groupId>
+        <artifactId>jmetal-lab</artifactId>
+        <version>${jmetal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uma.jmetal</groupId>
+        <artifactId>jmetal-auto</artifactId>
+        <version>6.7-SNAPSHOT</version>
+      </dependency>
+  </dependencies>
+</project>
