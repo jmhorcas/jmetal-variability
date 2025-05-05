@@ -45,7 +45,12 @@
       <dependency>
         <groupId>org.uma.jmetal</groupId>
         <artifactId>jmetal-auto</artifactId>
-        <version>6.7-SNAPSHOT</version>
+        <version>${jmetal.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.uma.jmetal</groupId>
+        <artifactId>jmetal-component</artifactId>
+        <version>${jmetal.version}</version>
       </dependency>
   </dependencies>
 </project>

@@ -19,13 +19,13 @@ import org.uma.jmetal.util.observer.impl.RunTimeChartObserver;
 public class AppExampleAuto extends AbstractAlgorithmRunner {
     public static void main( String[] args ) throws JMetalException, IOException {
         String problemName = "org.uma.jmetal.problem.multiobjective.Kursawe";
-        String referenceFrontFileName = "resources/referenceFrontsCSV/ZDT1.csv"; // TODO: no se cual usar para el problema Kursawe.
+        String referenceFrontFileName = "jMetal/resources/referenceFrontsCSV/Kursawe.csv";
 
         String[] parameters =
         ("--problemName " + problemName + " "
             + "--randomGeneratorSeed 12 "
             + "--referenceFrontFileName " + referenceFrontFileName + " "
-            + "--maximumNumberOfEvaluations 10000 "
+            + "--maximumNumberOfEvaluations 25000 "
             + "--populationSize 100 "
             + "--algorithmResult population  "
             + "--createInitialSolutions random "
