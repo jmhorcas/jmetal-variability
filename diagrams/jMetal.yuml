@@ -1,0 +1,92 @@
+// jMetal Class Diagram
+// -------------------
+
+[≪interface≫;Operator|+execute(source: Source): Result]
+
+// Crossover operators
+[Operator]^[CrossoverOperator]
+[CrossoverOperator]^[SBXCrossover]
+[CrossoverOperator]^[BLXAlphaCrossover]
+[CrossoverOperator]^[WholeArithmeticCrossover]
+[≪interface≫;CrossoverOperator|+crossoverProbability(): double;+numberOfRequiredParents(): int; +numberOfGeneratedChildren(): int]
+
+[SBXCrossover|-EPS: double = 1.0e-14;-distributionIndex: double;-crossoverProbability: double| ]
+
+[BLXAlphaCrossover|-DEFAULT_ALPHA: double = 0.5;-alpha: double;-crossoverProbability: double| ]
+
+[WholeArithmeticCrossover|-crossoverProbability: double | ]
+
+// Mutation operators
+[Operator]^[MutationOperator]
+[MutationOperator]^[UniformMutation]
+[MutationOperator]^[NonUniformMutation]
+[MutationOperator]^[PolynomialMutation]
+[MutationOperator]^[LinkedPolynomialMutation]
+[≪interface≫;MutationOperator|+execute(solution: Source): Source;+mutationProbability(): double]
+
+[UniformMutation|-perturbation: double;-mutationProbability: double]
+
+[NonUniformMutation|-perturbation: double;-maxIterations: int;-mutationProbability: double]
+
+[PolynomialMutation|-DEFAULT_DISTRIBUTION_INDEX: double = 20.0;-DEFAULT_PROBABILITY: double = 0.01;-distributionIndex: double;-mutationProbability: double]
+
+[LinkedPolynomialMutation|-DEFAULT_DISTRIBUTION_INDEX: double = 20.0;-DEFAULT_PROBABILITY: double = 0.01;-distributionIndex: double;-mutationProbability: double]
+
+// Selection operators
+[Operator]^[SelectionOperator]
+[SelectionOperator]^[NaryTournamentSelection]
+[NaryTournamentSelection]^[BinaryTournamentSelection]
+[SelectionOperator]^[RandomSelection]
+[SelectionOperator]^[NaryRandomSelection]
+
+
+[≪interface≫;SelectionOperator| ]
+
+[NaryTournamentSelection|-tournamentSize: int]
+
+// Algorithm
+[Algorithm]^[AbstractEvolutionaryAlgorithm]
+[AbstractEvolutionaryAlgorithm]^[AbstractGeneticAlgorithm]
+[AbstractGeneticAlgorithm]^[NSGAII]
+
+[≪interface≫;Algorithm|+run();+result(): R;+name(): String;+description(): String]
+
+[≪abstract≫AbstractEvolutionaryAlgorithm|#population: S*| ]
+[AbstractEvolutionaryAlgorithm]->[Problem]
+
+[≪abstract≫AbstractGeneticAlgorithm|#maxPopulationSize: int|]
+[AbstractGeneticAlgorithm]->[SelectionOperator]
+[AbstractGeneticAlgorithm]->[CrossoverOperator]
+[AbstractGeneticAlgorithm]->[MutationOperator]
+
+[NSGAII|#maxEvaluations: int;#matingPoolSize: int;#offspringPopulationSize: int| ]
+[≪interface≫SolutionListEvaluator|+evaluate(solutionList: S*, problem: Problem): S*;+shutdown()]
+[NSGAII]evaluator ->[SolutionListEvaluator]
+
+// Problem
+[≪interface≫Problem|+numberOfVariables(): int;+numberOfObjectives(): int;+numberOfConstraints(): int;+name(): String;+evaluate(solution: S): S;+createSolution(): S]
+
+// Solution
+[Solution]^[DoubleSolution]
+[Solution]^[AbstractSolution]
+[AbstractSolution| | ]^[CompositeSolution| | ]
+
+[≪interface≫Solution|+variables(): T*;+objectives(): double*;+constraints(): double*;+attributes(): Object:Object;+copy(): Solution]
+
+[≪interface≫DoubleSolution|+getBounds(index: int): Bounds]
+
+// Others
+[SBXCrossover]->[RepairDoubleSolution]
+[BLXAlphaCrossover]->[RepairDoubleSolution]
+[WholeArithmeticCrossover]->[RepairDoubleSolution]
+[SBXCrossover]->[RandomGenerator]
+[BLXAlphaCrossover]->[RandomGenerator]
+[WholeArithmeticCrossover]->[RandomGenerator]
+[UniformMutation]->[RepairDoubleSolution]
+[NonUniformMutation]->[RepairDoubleSolution]
+[PolynomialMutation]->[RepairDoubleSolution]
+[LinkedPolynomialMutation]->[RepairDoubleSolution]
+[UniformMutation]->[RandomGenerator]
+[NonUniformMutation]->[RandomGenerator]
+[PolynomialMutation]->[RandomGenerator]
+[LinkedPolynomialMutation]->[RandomGenerator]
