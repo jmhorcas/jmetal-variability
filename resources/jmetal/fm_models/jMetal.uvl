@@ -49,9 +49,17 @@ features
                             Real MutationPerturbation
                             Real MutationDistributionIndex
                     Selection
+                        alternative
+                            Random
+                            NaryRandom
+                            NaryTournament
+                                mandatory
+                                    Integer TournamentSize
+                            BinaryTournament
 constraints
     MaxPopulationSize > 0
     MaxEvaluations > 0
+    TournamentSize > 0
     CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0
     SBX <=> CrossoverDistributionIndex
     CrossoverDistributionIndex >= 5.0 & CrossoverDistributionIndex <= 400.0
@@ -62,5 +70,3 @@ constraints
     (Polynomial | LinkedPolynomial) <=> MutationDistributionIndex
     MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0
     MaxIterations >= 0
-
-    
