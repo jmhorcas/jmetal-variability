@@ -4,6 +4,9 @@ from typing import Any
 
 import jinja2
 
+from flamapy.metamodels.fm_metamodel.models import FeatureModel, Feature
+from flamapy.metamodels.fm_metamodel.transformations import UVLReader
+
 from uvengine.configuration import Configuration
 from uvengine.mapping_model import MappingModel
 
@@ -11,9 +14,11 @@ from uvengine.mapping_model import MappingModel
 class UVEngine():
 
     def __init__(self,
+                 fm_model_filepath: str,
                  template_filepath: str,
                  config_filepath: str,
                  mapping_filepath: str = None) -> None:
+        self._fm_model: FeatureModel = UVLReader(fm_model_filepath).transform()
         self._template_dirpath: str = pathlib.Path(template_filepath).parent
         self._template_filepath: str = template_filepath
         self._config_file: str = config_filepath
@@ -54,6 +59,12 @@ class UVEngine():
                 if isinstance(element_value, list):  # Multi-feature in the configuration
                     value = [self._build_template_maps(ev) for ev in element_value]
                 maps[handler] = value
+        # Automatic value for alternative variation points (we use the selected children of alternative features as value of the variation point) 
+        for element, element_value in configuration.elements.items():  # for each element in the configuration
+            feature = self._fm_model.get_feature_by_name(element)
+            parent = feature.get_parent()
+            if parent is not None and parent.is_alternative_group():
+                maps[parent.name] = element
         return maps
 
 

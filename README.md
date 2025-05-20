@@ -18,3 +18,9 @@
     ```
 5. Execute the example:
     `AppExample`
+
+
+## Tips para implementar mejor la variabilidad
+- El parámetro común de todos los crossover es el "crossover probability". Por lo tanto, todos los crossover deberían tener un constructor que reciba solo el crossover probability.
+- Para el resto de parámetros, se añade un setter y opcionalmente un constructor (si no hay valor por defecto).
+- Si hay valor por defecto, el constructor es opcional.

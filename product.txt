@@ -7,17 +7,17 @@ import org.uma.jmetal.algorithm.examples.AlgorithmRunner;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
-import org.uma.jmetal.operator.crossover.impl.{{CrossoverOperator}};
+import org.uma.jmetal.operator.crossover.impl.;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.selection.SelectionOperator;
-import org.uma.jmetal.operator.selection.impl.{{SelectionOperator}};
+import org.uma.jmetal.operator.selection.impl.;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.problem.ProblemFactory;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.errorchecking.JMetalException;
-import org.uma.jmetal.operator.mutation.impl.{{MutationOperator}};
+import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
 
 
 public class AppExample extends AbstractAlgorithmRunner {
@@ -25,25 +25,20 @@ public class AppExample extends AbstractAlgorithmRunner {
         String problemName = "org.uma.jmetal.problem.multiobjective.Kursawe";
         Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
 
-        double crossoverProbability = {{CrossoverProbability}};
-        CrossoverOperator<{{SolutionType}}> crossover = new {{CrossoverType}}(crossoverProbability);
-        {% if CrossoverDistributionIndex %}
-        crossover.distributionIndex({{CrossoverDistributionIndex}});
-        {% endif %}
-        {% if BLXAlphaValue %}
-        crossover.alpha({{BLXAlphaValue}});
-        {% endif %}
+        double crossoverProbability = 0.9;
+        CrossoverOperator<DoubleSolution> crossover = new SBXCrossover(crossoverProbability);
+        crossover.distributionIndex(20.0);
 
-        double mutationProbability = {{MutationProbability}};  // 1.0 / problem.numberOfVariables();
-        double mutationDistributionIndex = {{MutationDistributionIndex}};
-        MutationOperator<DoubleSolution> mutation = new {{MutationOperator}}(mutationProbability, mutationDistributionIndex);
+        double mutationProbability = 1.0;  // 1.0 / problem.numberOfVariables();
+        double mutationDistributionIndex = 20.0;
+        MutationOperator<DoubleSolution> mutation = new PolynomialMutation(mutationProbability, mutationDistributionIndex);
 
-        SelectionOperator<List<DoubleSolution>, DoubleSolution> selection = new {{SelectionOperator}}<>(new RankingAndCrowdingDistanceComparator<>());
+        SelectionOperator<List<DoubleSolution>, DoubleSolution> selection = new <>(new RankingAndCrowdingDistanceComparator<>());
 
-        int populationSize = {{MaxPopulationSize}};
+        int populationSize = 100;
         NSGAII<DoubleSolution> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation, populationSize)
                                                 .setSelectionOperator(selection)
-                                                .setMaxEvaluations({{MaxEvaluations}})
+                                                .setMaxEvaluations(25000)
                                                 .build();
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();

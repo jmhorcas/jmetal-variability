@@ -1,6 +1,62 @@
 features
     jMetal
         mandatory
+            Problem
+                mandatory
+                    Integer NumberOfVariables
+                    Integer NumberOfObjectives
+                    Integer NumberOfConstraints
+                    String name
+                optional
+                    DynamicProblem
+                optional
+                    ProblemType {abstract}
+                        alternative
+                            BinaryProblem
+                                mandatory
+                                    Integer TotalNumberOfBits
+                                    Integer NumberOfBitsPerVariable cardinality [1..*]
+                                optional 
+                                    FakeBinaryProblem
+                            DoubleProblem
+                                optional 
+                                    FakeDoubleProblem
+                                    ComposableDoubleProblem
+                            IntegerProblem
+                                optional 
+                                    FakeIntegerProblem
+                            PermutationProblem
+                                optional
+                                    FakeIntegerPermutationProblem
+                            SequenceProblem
+                    Integer Length
+            Solution  // Encoding
+                mandatory
+                    SolutionType {abstract}
+                        alternative
+                            BinarySolution
+                                optional
+                                    DefaultBinarySolution
+                            CompositeSolution
+                            DoubleSolution
+                                optional
+                                    DefaultDoubleSolution
+                                optional 
+                                    RepairDoubleSolution
+                                        alternative
+                                            RepairDoubleSolutionWithBoundValue
+                                            RepairDoubleSolutionWithOppositeBoundValue
+                                            RepairDoubleSolutionWithRandomValue
+                            IntegerSolution
+                                optional
+                                    DefaultIntegerSolution
+                            PermutationSolution
+                                optional
+                                    IntegerPermutationSolution
+                            PointSolution
+                            SequenceSolution
+                                optional
+                                    CharSequenceSolution
             Algorithm
                 alternative 
                     EvolutionaryAlgorithm
@@ -28,45 +84,67 @@ features
                         mandatory
                             CrossoverType {abstract}
                                 alternative
-                                    SBX
-                                    BLXAlpha
+                                    SBXCrossover
+                                        mandatory
+                                            Real CrossoverDistributionIndex
+                                    BLXAlphaCrossover
                                         mandatory
                                             Real BLXAlphaValue {default 0.5}
-                                    WholeArithmetic
+                                    WholeArithmeticCrossover
+                                    HUXCrossover
+                                    UniformCrossover
+                                    SinglePointCrossover
+                                    PMXCrossover
+                                    CycleCrossover
+                                    OXDCrossover
+                                    PositionBasedCrossover
+                                    EdgeRecombinationCrossover
                             Real CrossoverProbability
-                            Real CrossoverDistributionIndex
                     Mutation
                         mandatory
                             MutationType {abstract}
                                 alternative
-                                    Uniform
-                                    NonUniform
+                                    UniformMutation
+                                    NonUniformMutation
                                         mandatory
                                             Integer MaxIterations
-                                    Polynomial
-                                    LinkedPolynomial
+                                    PolynomialMutation
+                                    LinkedPolynomialMutation
                             Real MutationProbability
                             Real MutationPerturbation
                             Real MutationDistributionIndex
                     Selection
                         alternative
-                            Random
-                            NaryRandom
-                            NaryTournament
+                            RandomSelection
+                            NaryRandomSelection
+                            NaryTournamentSelection
                                 mandatory
                                     Integer TournamentSize
-                            BinaryTournament
+                            BinaryTournamentSelection
 constraints
     MaxPopulationSize > 0
     MaxEvaluations > 0
     TournamentSize > 0
     CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0
-    SBX <=> CrossoverDistributionIndex
     CrossoverDistributionIndex >= 5.0 & CrossoverDistributionIndex <= 400.0
     BLXAlphaValue >= 0.0 & BLXAlphaValue <= 1.0
     MutationProbability >= 0.0 & MutationProbability <= 2.0
-    (Uniform | NonUniform) <=> MutationPerturbation
+    (UniformMutation | NonUniformMutation) <=> MutationPerturbation
     MutationPerturbation >= 0.0 & MutationPerturbation <= 1.0
-    (Polynomial | LinkedPolynomial) <=> MutationDistributionIndex
+    (PolynomialMutation | LinkedPolynomialMutation) <=> MutationDistributionIndex
     MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0
     MaxIterations >= 0
+    FakeBinaryProblem => NumberOfObjectives == 2
+    FakeBinaryProblem => NumberOfConstraints == 0
+    FakeBinaryProblem => name == "Fake binary problem" 
+    FakeIntegerPermutationProblem => name == "FakeIntegerPermutationProblem"
+    FakeIntegerPermutationProblem => NumberOfConstraints == 0
+    Length <=> (PermutationProblem | SequenceProblem)
+    DoubleProblem => SBXCrossover | BLXAlphaCrossover | WholeArithmeticCrossover
+    BinaryProblem => HUXCrossover | SinglePointCrossover | UniformCrossover
+    PermutationProblem => PMXCrossover | CycleCrossover | OXDCrossover | PositionBasedCrossover | EdgeRecombinationCrossover
+    DoubleProblem <=> DoubleSolution
+    IntegerProblem <=> IntegerSolution
+    BinaryProblem <=> BinarySolution
+    PermutationProblem <=> PermutationSolution
+    SequenceProblem <=> SequenceSolution

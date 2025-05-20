@@ -11,7 +11,8 @@ mapping_filepath = 'resources/jmetal/mapping_models/jMetal_mapping.csv'
 
 
 def main() -> None:
-    uvengine = UVEngine(template_filepath=template_filepath,
+    uvengine = UVEngine(fm_model_filepath=fm_filepath,
+                        template_filepath=template_filepath,
                         config_filepath=config_filepath,
                         mapping_filepath=mapping_filepath)
     content = uvengine.resolve_variability()
