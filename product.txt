@@ -30,8 +30,8 @@ public class AppExample extends AbstractAlgorithmRunner {
         crossover.distributionIndex(20.0);
 
         double mutationProbability = 1.0;  // 1.0 / problem.numberOfVariables();
-        double mutationDistributionIndex = 20.0;
-        MutationOperator<DoubleSolution> mutation = new PolynomialMutation(mutationProbability, mutationDistributionIndex);
+        MutationOperator<DoubleSolution> mutation = new PolynomialMutation(mutationProbability);
+        mutation.setDistributionIndex(20.0);
 
         SelectionOperator<List<DoubleSolution>, DoubleSolution> selection = new <>(new RankingAndCrowdingDistanceComparator<>());
 

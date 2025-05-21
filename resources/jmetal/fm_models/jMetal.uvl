@@ -110,6 +110,13 @@ features
                                             Integer MaxIterations
                                     PolynomialMutation
                                     LinkedPolynomialMutation
+                                    BitFlipMutation
+                                    PermutationSwapMutation
+                                    DisplacementMutation
+                                    InsertMutation
+                                    ScrambleMutation
+                                    InversionMutation
+                                    SimpleInversionMutation
                             Real MutationProbability
                             Real MutationPerturbation
                             Real MutationDistributionIndex
@@ -121,6 +128,7 @@ features
                                 mandatory
                                     Integer TournamentSize
                             BinaryTournamentSelection
+                            PopulationAndNeighborhoodSelection  // incomplete
 constraints
     MaxPopulationSize > 0
     MaxEvaluations > 0
@@ -141,10 +149,14 @@ constraints
     FakeIntegerPermutationProblem => NumberOfConstraints == 0
     Length <=> (PermutationProblem | SequenceProblem)
     DoubleProblem => SBXCrossover | BLXAlphaCrossover | WholeArithmeticCrossover
+    DoubleProblem => PolynomialMutation | LinkedPolynomialMutation | UniformMutation | NonUniformMutation
     BinaryProblem => HUXCrossover | SinglePointCrossover | UniformCrossover
+    BinaryProblem => BitFlipMutation
     PermutationProblem => PMXCrossover | CycleCrossover | OXDCrossover | PositionBasedCrossover | EdgeRecombinationCrossover
+    PermutationProblem => PermutationSwapMutation | DisplacementMutation | InsertMutation | ScrambleMutation | InversionMutation | SimpleInversionMutation
     DoubleProblem <=> DoubleSolution
     IntegerProblem <=> IntegerSolution
     BinaryProblem <=> BinarySolution
     PermutationProblem <=> PermutationSolution
     SequenceProblem <=> SequenceSolution
+    BitFlipMutation => MutationProbability == MutationProbability / TotalNumberOfBits

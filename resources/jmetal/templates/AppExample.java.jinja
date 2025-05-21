@@ -35,8 +35,10 @@ public class AppExample extends AbstractAlgorithmRunner {
         {% endif %}
 
         double mutationProbability = {{MutationProbability}};  // 1.0 / problem.numberOfVariables();
-        double mutationDistributionIndex = {{MutationDistributionIndex}};
-        MutationOperator<DoubleSolution> mutation = new {{MutationOperator}}(mutationProbability, mutationDistributionIndex);
+        MutationOperator<{{SolutionType}}> mutation = new {{MutationOperator}}(mutationProbability);
+        {% if MutationDistributionIndex %}
+        mutation.setDistributionIndex({{MutationDistributionIndex}});
+        {% endif %}
 
         SelectionOperator<List<DoubleSolution>, DoubleSolution> selection = new {{SelectionOperator}}<>(new RankingAndCrowdingDistanceComparator<>());
 

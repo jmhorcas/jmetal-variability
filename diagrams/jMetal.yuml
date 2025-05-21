@@ -40,6 +40,14 @@
 [MutationOperator]^[NonUniformMutation]
 [MutationOperator]^[PolynomialMutation]
 [MutationOperator]^[LinkedPolynomialMutation]
+[MutationOperator]^[BitFlipMutation]
+[MutationOperator]^[PermutationSwapMutation]
+[MutationOperator]^[DisplacementMutation]
+[MutationOperator]^[InsertMutation]
+[MutationOperator]^[ScrambleMutation]
+[MutationOperator]^[InversionMutation]
+[MutationOperator]^[SimpleInversionMutation]
+
 [≪interface≫;MutationOperator|+execute(solution: Source): Source;+mutationProbability(): double]
 
 [UniformMutation|-perturbation: double;-mutationProbability: double]
@@ -49,6 +57,14 @@
 [PolynomialMutation|-DEFAULT_DISTRIBUTION_INDEX: double = 20.0;-DEFAULT_PROBABILITY: double = 0.01;-distributionIndex: double;-mutationProbability: double]
 
 [LinkedPolynomialMutation|-DEFAULT_DISTRIBUTION_INDEX: double = 20.0;-DEFAULT_PROBABILITY: double = 0.01;-distributionIndex: double;-mutationProbability: double]
+
+[BitFlipMutation|-mutationProbability: double]
+[PermutationSwapMutation|-mutationProbability: double]
+[DisplacementMutation|-mutationProbability: double]
+[InsertMutation|-mutationProbability: double]
+[ScrambleMutation|-mutationProbability: double]
+[InversionMutation|-mutationProbability: double]
+[SimpleInversionMutation|-mutationProbability: double]
 
 // Selection operators
 [Operator]^[SelectionOperator]
@@ -119,3 +135,13 @@
 [NonUniformMutation]->[RandomGenerator]
 [PolynomialMutation]->[RandomGenerator]
 [LinkedPolynomialMutation]->[RandomGenerator]
+[BitFlipMutation]->[RandomGenerator]
+[PermutationSwapMutation]->[RandomGenerator]
+[PermutationSwapMutation]->[BoundedRandomGenerator]
+[DisplacementMutation]->[JMetalRandom]
+[InsertMutation]->[JMetalRandom]
+[ScrambleMutation]->[JMetalRandom]
+[InversionMutation]->[JMetalRandom]
+[SimpleInversionMutation]->[JMetalRandom]
+[PermutationSwapMutation]->[JMetalRandom]
+[DisplacementMutation]->[JMetalRandom]
