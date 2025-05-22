@@ -118,6 +118,7 @@ features
                                     InversionMutation
                                     SimpleInversionMutation
                             Real MutationProbability
+                        optional
                             Real MutationPerturbation
                             Real MutationDistributionIndex
                     Selection
@@ -132,7 +133,7 @@ features
 constraints
     MaxPopulationSize > 0
     MaxEvaluations > 0
-    TournamentSize > 0
+    TournamentSize >= 2 & TournamentSize <= 10
     CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0
     CrossoverDistributionIndex >= 5.0 & CrossoverDistributionIndex <= 400.0
     BLXAlphaValue >= 0.0 & BLXAlphaValue <= 1.0
