@@ -65,11 +65,19 @@ features
                                 mandatory
                                     GeneticAlgorithmType {abstract}
                                         alternative
-                                            NSGAII
+                                            NSGAII {desc 'Nondominated Sorting Genetic Algorithm version II'}
                                                 mandatory
                                                     Integer MaxEvaluations
+                                                optional
+                                                    NSGAIIVersion
+                                                        alternative 
+                                                            SteadyStateNSGAII {desc 'Steady-State NSGA-II'}
+                                                            NSGAIIMeasures {desc 'NSGA-II with measures'}
+                                                            DNSGAII {desc 'DIR based NSGA-II'}
+                                                    Integer MatingPoolSize
+                                                    Integer OffspringPopulationSize
                                             NSGAIII
-                                            IBEA
+                                            IBEA {desc 'Indicator Based Evolutionary Algorithm'}
                                             MOEA
                                     Integer MaxPopulationSize
                             DifferentialEvolution
@@ -161,3 +169,5 @@ constraints
     PermutationProblem <=> PermutationSolution
     SequenceProblem <=> SequenceSolution
     BitFlipMutation => MutationProbability == MutationProbability / TotalNumberOfBits
+    MatingPoolSize <=> (NSGAII | NSGAIIMeasures | DNSGAII)
+    OffspringPopulationSize <=> (NSGAII | NSGAIIMeasures | DNSGAII)

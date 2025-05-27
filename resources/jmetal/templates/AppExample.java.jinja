@@ -23,7 +23,7 @@ import org.uma.jmetal.operator.mutation.impl.{{MutationOperator}};
 public class AppExample extends AbstractAlgorithmRunner {
     public static void main( String[] args ) throws JMetalException, IOException {
         String problemName = "org.uma.jmetal.problem.multiobjective.Kursawe";
-        Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
+        Problem<{{SolutionType}}> problem = ProblemFactory.<{{SolutionType}}>loadProblem(problemName);
 
         double crossoverProbability = {{CrossoverProbability}};
         CrossoverOperator<{{SolutionType}}> crossover = new {{CrossoverType}}(crossoverProbability);
@@ -40,7 +40,7 @@ public class AppExample extends AbstractAlgorithmRunner {
         mutation.setDistributionIndex({{MutationDistributionIndex}});
         {% endif %}
 
-        SelectionOperator<List<DoubleSolution>, DoubleSolution> selection = new {{SelectionOperator}}<>(new RankingAndCrowdingDistanceComparator<>());
+        SelectionOperator<List<{{SolutionType}}>, {{SolutionType}}> selection = new {{SelectionOperator}}<>(new RankingAndCrowdingDistanceComparator<>());
 
         int populationSize = {{MaxPopulationSize}};
         NSGAII<DoubleSolution> algorithm = new NSGAIIBuilder<>(problem, crossover, mutation, populationSize)
@@ -49,7 +49,7 @@ public class AppExample extends AbstractAlgorithmRunner {
                                                 .build();
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm).execute();
-        List<DoubleSolution> population = algorithm.result();
+        List<{{SolutionType}}> population = algorithm.result();
         printFinalSolutionSet(population);
     }
 }
