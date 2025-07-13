@@ -1,0 +1,121 @@
+package org.uma.jmetal.component.examples.multiobjective.nsgaii;
+
+import java.io.IOException;
+import java.util.List;
+import org.uma.jmetal.component.algorithm.EvolutionaryAlgorithm;
+import org.uma.jmetal.component.algorithm.multiobjective.NSGAIIBuilder;
+import org.uma.jmetal.component.catalogue.common.termination.Termination;
+import org.uma.jmetal.component.catalogue.common.termination.impl.TerminationByComputingTime;
+import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
+import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
+import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.problem.ProblemFactory;
+import org.uma.jmetal.qualityindicator.QualityIndicatorUtils;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
+import org.uma.jmetal.util.JMetalLogger;
+import org.uma.jmetal.util.SolutionListUtils;
+import org.uma.jmetal.util.VectorUtils;
+import org.uma.jmetal.util.errorchecking.JMetalException;
+import org.uma.jmetal.util.fileoutput.SolutionListOutput;
+import org.uma.jmetal.util.fileoutput.impl.DefaultFileOutputContext;
+import org.uma.jmetal.util.pseudorandom.JMetalRandom;
+
+
+public class NSGAIIVar {
+
+  public static void main(String[] args) throws JMetalException, IOException {
+    // Problem configuration
+    String problemName = "org.uma.jmetal.problem.multiobjective.zdt.ZDT1";
+    String referenceParetoFront = "resources/referenceFrontsCSV/ZDT1.csv";
+
+    Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
+
+    // Algorithm configuration
+    String algorithmName = "NSGAII";
+
+    // Configure initial population creation
+    int populationSize = {{MaxPopulationSize}};
+    SolutionsCreation<{{SolutionType}}> createInitialPopulation = new RandomSolutionsCreation<>(problem, populationSize);
+
+    // Configure evaluation
+    Evaluation<{{SolutionType}}> evaluation = new SequentialEvaluation<>(problem);
+
+    // Configure termination condition
+    {% if TerminationByComputingTime %}
+    Termination termination = new TerminationByComputingTime({{MaxComputingTime}});
+    {% elif TerminationByKeyboard %}
+    Termination termination = new TerminationByKeyboard();
+    {% elif TerminationByQualityIndicator %}
+    Termination termination = new TerminationByQualityIndicator(..., ..., {{Percentage}}, {{EvaluationsLimit}});  // To be completed.
+    {% else %}
+    Termination termination = new TerminationByEvaluations({{MaxNumberOfEvaluations}});
+    {% endif %}
+
+    // Configure the crossover operator
+    double crossoverProbability = {{CrossoverProbability}};
+    CrossoverOperator<{{SolutionType}}> crossover = new {{CrossoverType}}(crossoverProbability);
+    {% if CrossoverDistributionIndex %}
+    crossover.distributionIndex({{CrossoverDistributionIndex}});
+    {% endif %}
+    {% if BLXAlphaValue %}
+    crossover.alpha({{BLXAlphaValue}});
+    {% endif %}
+
+    // Configure the mutation operator
+    double mutationProbability = {{MutationProbability}} / problem.numberOfVariables();
+    MutationOperator<{{SolutionType}}> mutation = new {{MutationOperator}}(mutationProbability);
+    {% if MutationDistributionIndex %}
+    mutation.setDistributionIndex({{MutationDistributionIndex}});
+    {% endif %}
+    {% if MutationPerturbation %}
+    mutation.setPerturbation({{MutationPerturbation}});
+    {% endif %}
+
+    // Configure replacement
+    Ranking<{{SolutionType}}> ranking = new FastNonDominatedSortRanking<>();
+    DensityEstimator<{{SolutionType}}> densityEstimator = new CrowdingDistanceDensityEstimator<>();
+    Replacement<{{SolutionType}}> replacement = new RankingAndDensityEstimatorReplacement<>(ranking, densityEstimator, Replacement.RemovalPolicy.ONE_SHOT);
+
+    // Configure variation
+    int offspringPopulationSize = populationSize;
+    Variation<{{SolutionType}}> variation = new CrossoverAndMutationVariation<>(offspringPopulationSize, crossover, mutation);
+
+    // Configure selection operator
+    Selection<{{SolutionType}}> selection = new NaryTournamentSelection<>(
+            tournamentSize,
+            variation.getMatingPoolSize(),
+            new MultiComparator<>(
+                Arrays.asList(
+                    Comparator.comparing(ranking::getRank),
+                    Comparator.comparing(densityEstimator::value).reversed())));
+
+    EvolutionaryAlgorithm<DoubleSolution> nsgaii = new EvolutionaryAlgorithm<>(
+      algorithmName, 
+      createInitialPopulation, 
+      evaluation, 
+      termination,
+      selection, 
+      variation, 
+      replacement);
+
+    // Run the algorithm
+    nsgaii.run();
+
+    List<DoubleSolution> population = nsgaii.result();
+    JMetalLogger.logger.info("Total execution time : " + nsgaii.totalComputingTime() + "ms");
+    JMetalLogger.logger.info("Number of evaluations: " + nsgaii.numberOfEvaluations() + "\n");
+
+    new SolutionListOutput(population)
+        .setVarFileOutputContext(new DefaultFileOutputContext("VAR.csv", ","))
+        .setFunFileOutputContext(new DefaultFileOutputContext("FUN.csv", ","))
+        .print();
+
+    JMetalLogger.logger.info("Random seed: " + JMetalRandom.getInstance().getSeed());
+    JMetalLogger.logger.info("Objectives values have been written to file FUN.csv");
+    JMetalLogger.logger.info("Variables values have been written to file VAR.csv");
+
+    QualityIndicatorUtils.printQualityIndicators(
+        SolutionListUtils.getMatrixWithObjectiveValues(population),
+        VectorUtils.readVectors(referenceParetoFront, ","));
+  }
+}
