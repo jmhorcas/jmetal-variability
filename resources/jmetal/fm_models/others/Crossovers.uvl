@@ -1,0 +1,21 @@
+features
+    Crossover
+        mandatory
+            CrossoverType {abstract}
+                alternative
+                    SBXCrossover
+                        mandatory
+                            Real CrossoverDistributionIndex {default 20.0, constraint CrossoverDistributionIndex >= 5.0 & CrossoverDistributionIndex <= 400.0}
+                    BLXAlphaCrossover
+                        mandatory
+                            Real BLXAlphaValue {default 0.5, constraint BLXAlphaValue >= 0.0 & BLXAlphaValue <= 1.0}
+                    WholeArithmeticCrossover
+                    HUXCrossover
+                    UniformCrossover
+                    SinglePointCrossover
+                    PMXCrossover
+                    CycleCrossover
+                    OXDCrossover
+                    PositionBasedCrossover
+                    EdgeRecombinationCrossover
+            Real CrossoverProbability {constraint CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0}

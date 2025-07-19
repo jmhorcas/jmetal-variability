@@ -1,25 +1,41 @@
+import pathlib
+
 from uvengine import UVEngine
 
 
 # jMetal example
 template_dir = 'resources/jmetal/templates'
-template_file = 'AppExample.java.jinja'
-template_filepath = 'resources/jmetal/templates/AppExample.java.jinja'
+template_file = 'NSGAIIVar.java.jinja'
+template_filepath = 'resources/jmetal/templates/NSGAIIVar.java.jinja'
 fm_filepath = 'resources/jmetal/fm_models/jMetal.uvl'
-config_filepath = 'resources/jmetal/configurations/jMetal.uvl.json'
-mapping_filepath = 'resources/jmetal/mapping_models/jMetal_mapping.csv'
+config_filepath = 'resources/jmetal/configurations/GNSGAIIExample.uvl.json'
+#mapping_filepath = 'resources/jmetal/mapping_models/jMetal_mapping.csv'
+mapping_filepath = None
 
 
 def main() -> None:
-    uvengine = UVEngine(fm_model_filepath=fm_filepath,
-                        template_filepath=template_filepath,
-                        config_filepath=config_filepath,
-                        mapping_filepath=mapping_filepath)
-    content = uvengine.resolve_variability()
-    print(content)
-    # Save the product
-    with open('product.txt', 'w', encoding='utf-8') as file:
+    uvengine = UVEngine(feature_model_path=fm_filepath,
+                        configs_path=[config_filepath],
+                        templates_paths=[template_filepath],
+                        mapping_model_filepath=mapping_filepath)
+    resolved_templates = uvengine.resolve_variability()
+    # Save the resolved templates to file
+    for template_path, content in resolved_templates.items():
+        outputfile = save_template(template_path, content)
+        print(content)
+        print(f'Resolved template saved to: {outputfile}')
+
+
+def save_template(template_path: str, content: str) -> str:
+    """Save the resolved template content to a file."""
+    template_path = pathlib.Path(template_path)
+    base_path = template_path.parent
+    name = template_path.name.removesuffix(''.join(template_path.suffixes)) + '_resolved'
+    suffixes = ''.join(template_path.suffixes).replace('.jinja', '')
+    output_file = base_path / f'{name}{suffixes}'
+    with open(output_file, 'w', encoding='utf-8') as file:
         file.write(content)
+    return str(output_file)
 
 
 if __name__ == '__main__':

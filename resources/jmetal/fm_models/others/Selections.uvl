@@ -1,0 +1,10 @@
+features
+    Selection
+        alternative
+            RandomSelection
+            NaryRandomSelection
+            NaryTournamentSelection
+                mandatory
+                    Integer TournamentSize
+            BinaryTournamentSelection
+            PopulationAndNeighborhoodSelection  // incomplete

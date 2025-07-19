@@ -1,10 +1,1 @@
 Feature, Handler, Value
-DoubleSolution, SolutionType, DoubleSolution
-UniformMutation, MutationOperator, UniformMutation
-NonUniformMutation, MutationOperator, NonUniformMutation
-PolynomialMutation, MutationOperator, PolynomialMutation
-LinkedPolynomialMutation, MutationOperator, LinkedPolynomialMutation
-NaryTournamentSelection, SelectionOperator, BinaryTournamentSelection
-NaryTournamentSelection, SelectionOperator, NaryTournamentSelection
-RandomSelection, SelectionOperator, RandomSelection
-NaryRandomSelection, SelectionOperator, NaryRandomSelection

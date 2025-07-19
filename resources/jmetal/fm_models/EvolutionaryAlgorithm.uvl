@@ -1,0 +1,125 @@
+features
+    EvolutionaryAlgorithm
+        mandatory
+            String name
+            InitialPopulationCreation
+                mandatory
+                    SolutionCreation
+                        alternative
+                            RandomSolutionsCreation
+                            ScatterSearchSolutionsCreation {incomplete}
+                            LatinHypercubeSamplingSolutionsCreation {incomplete}
+                    Integer PopulationSize {constraint PopulationSize > 0}
+            Evaluation
+                mandatory
+                    EvaluationType {abstract}
+                        alternative
+                            SequentialEvaluation
+                            MultiThreadedEvaluation
+                                mandatory
+                                    Integer NumberOfThreads {constraint NumberOfThreads >= 0}
+                optional
+                    WithArchive {incomplete}
+            Termination
+                alternative
+                    TerminationByEvaluations
+                        mandatory
+                            Integer MaxNumberOfEvaluations {default 25000, constraint MaxNumberOfEvaluations >= 0}
+                    TerminationByComputingTime
+                        mandatory
+                            Integer MaxComputingTime {default 2500, unit 's', constraint MaxComputingTime >= 0}
+                    TerminationByKeyboard
+                    TerminationByQualityIndicator 
+                        mandatory
+                            QualityIndicator {incomplete}
+                            ReferenceFront {incomplete}
+                            Real Percentage {constraint Percentage >= 0 & Percentage <= 1}
+                            Integer EvaluationsLimit {constraint EvaluationsLimit >= 0} 
+            Selection
+                alternative
+                    RandomSelection
+                    NaryRandomSelection
+                    NaryTournamentSelection
+                        mandatory
+                            Integer TournamentSize {default 2}
+                    BinaryTournamentSelection
+                    PopulationAndNeighborhoodSelection {incomplete}
+            Variation
+                mandatory
+                    VariationType {abstract}
+                        alternative
+                            CrossoverAndMutationVariation
+                            DifferentialEvolutionCrossoverVariation
+                    Integer OffspringPopulationSize {constraint OffspringPopulationSize > 0}
+                    CrossoverOperator
+                        mandatory
+                            CrossoverType {abstract}
+                                alternative
+                                    SBXCrossover
+                                        mandatory
+                                            Real CrossoverDistributionIndex {default 20.0, constraint CrossoverDistributionIndex >= 5.0 & CrossoverDistributionIndex <= 400.0}
+                                    BLXAlphaCrossover
+                                        mandatory
+                                            Real BLXAlphaValue {default 0.5, constraint BLXAlphaValue >= 0.0 & BLXAlphaValue <= 1.0}
+                                    WholeArithmeticCrossover
+                                    HUXCrossover
+                                    UniformCrossover
+                                    SinglePointCrossover
+                                    PMXCrossover
+                                    CycleCrossover
+                                    OXDCrossover
+                                    PositionBasedCrossover
+                                    EdgeRecombinationCrossover
+                                    DifferentialEvolutionCrossover {incomplete}
+                            Real CrossoverProbability {constraint CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0}
+                    MutationOperator
+                        mandatory
+                            MutationType {abstract}
+                                alternative
+                                    UniformMutation
+                                    NonUniformMutation
+                                        mandatory
+                                            Integer MaxIterations {constraint MaxIterations >= 0}
+                                    PolynomialMutation
+                                    LinkedPolynomialMutation
+                                    BitFlipMutation
+                                    PermutationSwapMutation
+                                    DisplacementMutation
+                                    InsertMutation
+                                    ScrambleMutation
+                                    InversionMutation
+                                    SimpleInversionMutation
+                            Real MutationProbability {constraint MutationProbability >= 0.0 & MutationProbability <= 2.0}
+            Replacement
+                mandatory
+                    ReplacementType {abstract}
+                        alternative
+                            RankingAndDensityEstimatorReplacement
+                                mandatory
+                                    Ranking
+                                        alternative
+                                            FastNonDominatedSortRanking
+                                            ExperimentalFastNonDominanceRanking
+                                            MergeNonDominatedSortRanking
+                                            StrengthRanking
+                                    DensityEstimator
+                                        alternative 
+                                            CrowdingDistanceDensityEstimator
+                                            CosineSimilarityDensityEstimator
+                                            GridDensityEstimator
+                                            HypervolumeContributionDensityEstimator
+                                            KnnDensityEstimator
+                                            SpatialSpreadDeviationDensityEstimator
+                                            StrenghtRawFitnessDensityEstimator
+                            SingleSolutionReplacement
+                            PairwiseReplacement
+                            MuPlusLambdaReplacement
+                            MuCommaLambdaReplacement
+                            MOEADReplacement
+                            SMSEMOAReplacement
+constraints
+    PopulationSize == OffspringPopulationSize
+    DifferentialEvolutionCrossoverVariation => DifferentialEvolutionCrossover
+    CrossoverAndMutationVariation => !DifferentialEvolutionCrossover
+    (UniformMutation | NonUniformMutation) <=> MutationPerturbation
+    (PolynomialMutation | LinkedPolynomialMutation) <=> MutationDistributionIndex

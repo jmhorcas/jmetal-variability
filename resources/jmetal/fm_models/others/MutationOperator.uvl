@@ -1,0 +1,25 @@
+features
+    MutationOperator
+        mandatory
+            MutationType {abstract}
+                alternative
+                    UniformMutation
+                    NonUniformMutation
+                        mandatory
+                            Integer MaxIterations {constraint MaxIterations >= 0}
+                    PolynomialMutation
+                    LinkedPolynomialMutation
+                    BitFlipMutation
+                    PermutationSwapMutation
+                    DisplacementMutation
+                    InsertMutation
+                    ScrambleMutation
+                    InversionMutation
+                    SimpleInversionMutation
+            Real MutationProbability {constraint MutationProbability >= 0.0 & MutationProbability <= 2.0}
+        optional
+            Real MutationPerturbation {constraint MutationPerturbation >= 0.0 & MutationPerturbation <= 1.0}
+            Real MutationDistributionIndex {constraint MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0}
+constraints
+    (UniformMutation | NonUniformMutation) <=> MutationPerturbation
+    (PolynomialMutation | LinkedPolynomialMutation) <=> MutationDistributionIndex

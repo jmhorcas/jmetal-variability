@@ -1,0 +1,24 @@
+{
+  "file": "EvolutionaryAlgorithm.uvl",
+  "config": {
+    "Name": "NSGAII",
+    "RandomSolutionsCreation": true,
+    "PopulationSize": 100,
+    "SequentialEvaluation": true,
+    "TerminationByEvaluations": true,
+    "MaxNumberOfEvaluations": 25000,
+    "NaryTournamentSelection": true,
+    "TournamentSize": 2,
+    "CrossoverAndMutationVariation": true,
+    "OffspringPopulationSize": 100,
+    "SBXCrossover": true,
+    "CrossoverProbability": 0.9,
+    "CrossoverDistributionIndex": 20.0,
+    "PolynomialMutation": true,
+    "MutationProbability": 1.0,
+    "MutationDistributionIndex": 20.0,
+    "RankingAndDensityEstimatorReplacement": true,
+    "FastNonDominatedSortRanking": true,
+    "CrowdingDistanceDensityEstimator": true
+  }
+}
