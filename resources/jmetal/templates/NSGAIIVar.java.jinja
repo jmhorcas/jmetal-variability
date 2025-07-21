@@ -43,7 +43,9 @@ public class {{Filename}} {
   public static void main(String[] args) throws JMetalException, IOException {
     // Problem configuration
     String problemName = "{{ProblemName}}";
+    {% if ReferenceParetoFront %}
     String referenceParetoFront = "{{ReferenceParetoFront}}";
+    {% endif %}
 
     Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
 
@@ -116,6 +118,15 @@ public class {{Filename}} {
       variation, 
       replacement);
 
+    {% if EvaluationObserver %}
+    EvaluationObserver evaluationObserver = new EvaluationObserver({{EvaluationObserverFrequency}});
+    RunTimeChartObserver<{{SolutionType}}> runTimeChartObserver =
+        new RunTimeChartObserver<>(algorithmName, 80, 500, referenceParetoFront);
+
+    nsgaii.observable().register(evaluationObserver);
+    nsgaii.observable().register(runTimeChartObserver);
+    {% endif %}
+
     // Run the algorithm
     nsgaii.run();
 
@@ -132,8 +143,10 @@ public class {{Filename}} {
     JMetalLogger.logger.info("Objectives values have been written to file FUN.csv");
     JMetalLogger.logger.info("Variables values have been written to file VAR.csv");
 
+    {% if ReferenceParetoFront %}
     QualityIndicatorUtils.printQualityIndicators(
         SolutionListUtils.getMatrixWithObjectiveValues(population),
         VectorUtils.readVectors(referenceParetoFront, ","));
+    {% endif %}
   }
 }

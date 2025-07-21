@@ -2,6 +2,10 @@ imports
     EvolutionaryAlgorithm as EAConfig
 features
     jMetal
+        optional
+            EvaluationObserver
+                mandatory
+                    Integer EvaluationObserverFrequency
         mandatory
             Problem
                 mandatory
@@ -109,3 +113,4 @@ constraints
     PermutationProblem => EAConfig.PMXCrossover | EAConfig.CycleCrossover | EAConfig.OXDCrossover | EAConfig.PositionBasedCrossover | EAConfig.EdgeRecombinationCrossover
     PermutationProblem => EAConfig.PermutationSwapMutation | EAConfig.DisplacementMutation | EAConfig.InsertMutation | EAConfig.ScrambleMutation | EAConfig.InversionMutation | EAConfig.SimpleInversionMutation
     BitFlipMutation => EAConfig.MutationProbability == (EAConfig.MutationProbability / TotalNumberOfBits)
+    SteadyStateNSGAII => EAConfig.OffspringPopulationSize == 1

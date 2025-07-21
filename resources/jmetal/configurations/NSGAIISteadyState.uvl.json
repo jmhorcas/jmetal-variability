@@ -1,0 +1,27 @@
+{
+  "file": "EvolutionaryAlgorithm.uvl",
+  "config": {
+    "ProblemName": "org.uma.jmetal.problem.multiobjective.zdt.ZDT4",
+    "ReferenceParetoFront": "jMetal/resources/referenceFrontsCSV/ZDT4.csv",
+    "DoubleSolution": true,
+    "AlgorithmName": "Steady-State NSGAII",
+    "RandomSolutionsCreation": true,
+    "PopulationSize": 100,
+    "SequentialEvaluation": true,
+    "TerminationByEvaluations": true,
+    "MaxNumberOfEvaluations": 20000,
+    "NaryTournamentSelection": true,
+    "TournamentSize": 2,
+    "CrossoverAndMutationVariation": true,
+    "OffspringPopulationSize": 1,
+    "SBXCrossover": true,
+    "CrossoverProbability": 0.9,
+    "CrossoverDistributionIndex": 20.0,
+    "PolynomialMutation": true,
+    "MutationProbability": 1.0,
+    "MutationDistributionIndex": 20.0,
+    "RankingAndDensityEstimatorReplacement": true,
+    "FastNonDominatedSortRanking": true,
+    "CrowdingDistanceDensityEstimator": true
+  }
+}
