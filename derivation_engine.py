@@ -8,7 +8,7 @@ template_dir = 'resources/jmetal/templates'
 template_file = 'NSGAIIVar.java.jinja'
 template_filepath = 'resources/jmetal/templates/NSGAIIVar.java.jinja'
 fm_filepath = 'resources/jmetal/fm_models/jMetal.uvl'
-config_filepath = 'resources/jmetal/configurations/GNSGAIIExample.uvl.json'
+config_filepath = 'resources/jmetal/configurations/NSGAIIDefaultConfiguration.uvl.json'
 #mapping_filepath = 'resources/jmetal/mapping_models/jMetal_mapping.csv'
 mapping_filepath = None
 
@@ -18,10 +18,16 @@ def main() -> None:
                         configs_path=[config_filepath],
                         templates_paths=[template_filepath],
                         mapping_model_filepath=mapping_filepath)
+    # Configure the name of the resulting class
+    config_path = pathlib.Path(config_filepath)
+    base_path = pathlib.Path('jmetal-var/src/main/java')
+    name = config_path.name.removesuffix(''.join(config_path.suffixes))
+    output_file = base_path / f'{name}.java'
+    uvengine.configuration.elements['Filename'] = name
     resolved_templates = uvengine.resolve_variability()
     # Save the resolved templates to file
     for template_path, content in resolved_templates.items():
-        outputfile = save_template(template_path, content)
+        outputfile = save_template(output_file, content)
         print(content)
         print(f'Resolved template saved to: {outputfile}')
 
@@ -30,7 +36,7 @@ def save_template(template_path: str, content: str) -> str:
     """Save the resolved template content to a file."""
     template_path = pathlib.Path(template_path)
     base_path = template_path.parent
-    name = template_path.name.removesuffix(''.join(template_path.suffixes)) + '_resolved'
+    name = template_path.name.removesuffix(''.join(template_path.suffixes))
     suffixes = ''.join(template_path.suffixes).replace('.jinja', '')
     output_file = base_path / f'{name}{suffixes}'
     with open(output_file, 'w', encoding='utf-8') as file:
