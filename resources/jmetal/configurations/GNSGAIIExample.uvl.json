@@ -1,7 +1,10 @@
 {
   "file": "EvolutionaryAlgorithm.uvl",
   "config": {
-    "Name": "NSGAII",
+    "ProblemName": "org.uma.jmetal.problem.multiobjective.zdt.ZDT1",
+    "ReferenceParetoFront": "jMetal/resources/referenceFrontsCSV/ZDT1.csv",
+    "DoubleSolution": true,
+    "AlgorithmName": "NSGAII",
     "RandomSolutionsCreation": true,
     "PopulationSize": 100,
     "SequentialEvaluation": true,

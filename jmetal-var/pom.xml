@@ -12,16 +12,10 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>22</maven.compiler.source>
     <maven.compiler.target>22</maven.compiler.target>
-    <jmetal.version>6.6</jmetal.version>
+    <jmetal.version>6.9.1</jmetal.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
       <dependency>
         <groupId>org.uma.jmetal</groupId>
         <artifactId>jmetal-core</artifactId>

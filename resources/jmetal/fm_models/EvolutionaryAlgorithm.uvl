@@ -1,7 +1,7 @@
 features
     EvolutionaryAlgorithm
         mandatory
-            String name
+            String AlgorithmName
             InitialPopulationCreation
                 mandatory
                     SolutionCreation

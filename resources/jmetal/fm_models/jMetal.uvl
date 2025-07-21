@@ -10,8 +10,8 @@ features
                     Integer NumberOfConstraints
                     String ProblemName
                 optional
+                    String ReferenceParetoFront
                     DynamicProblem
-                optional
                     ProblemType {abstract}
                         alternative
                             BinaryProblem

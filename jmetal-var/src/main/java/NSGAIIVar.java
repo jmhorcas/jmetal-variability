@@ -4,32 +4,30 @@ import java.util.Arrays;
 import java.util.Comparator;
 import org.uma.jmetal.component.algorithm.EvolutionaryAlgorithm;
 import org.uma.jmetal.component.catalogue.common.solutionscreation.SolutionsCreation;
-import org.uma.jmetal.component.catalogue.common.solutionscreation.impl.{{SolutionCreation}};
+import org.uma.jmetal.component.catalogue.common.solutionscreation.impl.RandomSolutionsCreation;
 import org.uma.jmetal.component.catalogue.common.evaluation.Evaluation;
-import org.uma.jmetal.component.catalogue.common.evaluation.impl.{{EvaluationType}};
+import org.uma.jmetal.component.catalogue.common.evaluation.impl.SequentialEvaluation;
 import org.uma.jmetal.component.catalogue.common.termination.Termination;
-import org.uma.jmetal.component.catalogue.common.termination.impl.{{Termination}};
+import org.uma.jmetal.component.catalogue.common.termination.impl.TerminationByEvaluations;
 import org.uma.jmetal.component.catalogue.ea.replacement.Replacement;
 import org.uma.jmetal.component.catalogue.ea.replacement.impl.RankingAndDensityEstimatorReplacement;
 import org.uma.jmetal.component.catalogue.ea.selection.Selection;
-import org.uma.jmetal.component.catalogue.ea.selection.impl.{{Selection}};
+import org.uma.jmetal.component.catalogue.ea.selection.impl.NaryTournamentSelection;
 import org.uma.jmetal.component.catalogue.ea.variation.Variation;
-import org.uma.jmetal.component.catalogue.ea.variation.impl.{{VariationType}};
+import org.uma.jmetal.component.catalogue.ea.variation.impl.CrossoverAndMutationVariation;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
-import org.uma.jmetal.operator.crossover.impl.{{CrossoverType}};
+import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.MutationOperator;
-import org.uma.jmetal.operator.mutation.impl.{{MutationType}};
+import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.problem.ProblemFactory;
 import org.uma.jmetal.solution.Solution;
-{% if DoubleSolution %}
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
-{% endif %}
 import org.uma.jmetal.util.comparator.MultiComparator;
 import org.uma.jmetal.util.densityestimator.DensityEstimator;
-import org.uma.jmetal.util.densityestimator.impl.{{DensityEstimator}};
+import org.uma.jmetal.util.densityestimator.impl.CrowdingDistanceDensityEstimator;
 import org.uma.jmetal.util.ranking.Ranking;
-import org.uma.jmetal.util.ranking.impl.{{Ranking}};
+import org.uma.jmetal.util.ranking.impl.FastNonDominatedSortRanking;
 import org.uma.jmetal.util.restartstrategy.CreateNewSolutionsStrategy;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.comparator.dominanceComparator.impl.GDominanceComparator;
@@ -46,64 +44,46 @@ public class NSGAIIVar {
 
   public static void main(String[] args) throws JMetalException, IOException {
     // Problem configuration
-    String problemName = "{{ProblemName}}";
-    String referenceParetoFront = "{{ReferenceParetoFront}}";
+    String problemName = "org.uma.jmetal.problem.multiobjective.zdt.ZDT1";
+    String referenceParetoFront = "jMetal/resources/referenceFrontsCSV/ZDT1.csv";
 
     Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
 
     // Algorithm configuration
-    String algorithmName = "{{AlgorithmName}}";
+    String algorithmName = "NSGAII";
 
     // Configure initial population creation
-    int populationSize = {{PopulationSize}};
-    SolutionsCreation<{{SolutionType}}> createInitialPopulation = new {{SolutionCreation}}<>(problem, populationSize);
+    int populationSize = 100;
+    SolutionsCreation<DoubleSolution> createInitialPopulation = new RandomSolutionsCreation<>(problem, populationSize);
 
     // Configure evaluation
-    Evaluation<{{SolutionType}}> evaluation = new {{EvaluationType}}<>(problem);
+    Evaluation<DoubleSolution> evaluation = new SequentialEvaluation<>(problem);
 
     // Configure termination condition
-    {% if TerminationByComputingTime %}
-    Termination termination = new TerminationByComputingTime({{MaxComputingTime}});
-    {% elif TerminationByKeyboard %}
-    Termination termination = new TerminationByKeyboard();
-    {% elif TerminationByQualityIndicator %}
-    Termination termination = new TerminationByQualityIndicator(..., ..., {{Percentage}}, {{EvaluationsLimit}});  // To be completed.
-    {% else %}
-    Termination termination = new TerminationByEvaluations({{MaxNumberOfEvaluations}});
-    {% endif %}
+    Termination termination = new TerminationByEvaluations(25000);
 
     // Configure the crossover operator
-    double crossoverProbability = {{CrossoverProbability}};
-    {{CrossoverType}} crossover = new {{CrossoverType}}(crossoverProbability);
-    {% if CrossoverDistributionIndex %}
-    crossover.distributionIndex({{CrossoverDistributionIndex}});
-    {% endif %}
-    {% if BLXAlphaValue %}
-    crossover.alpha({{BLXAlphaValue}});
-    {% endif %}
+    double crossoverProbability = 0.9;
+    SBXCrossover crossover = new SBXCrossover(crossoverProbability);
+    crossover.distributionIndex(20.0);
 
     // Configure the mutation operator
-    double mutationProbability = {{MutationProbability}} / problem.numberOfVariables();
-    {{MutationType}} mutation = new {{MutationType}}(mutationProbability);
-    {% if MutationDistributionIndex %}
-    mutation.setDistributionIndex({{MutationDistributionIndex}});
-    {% endif %}
-    {% if MutationPerturbation %}
-    mutation.setPerturbation({{MutationPerturbation}});
-    {% endif %}
+    double mutationProbability = 1.0 / problem.numberOfVariables();
+    PolynomialMutation mutation = new PolynomialMutation(mutationProbability);
+    mutation.setDistributionIndex(20.0);
 
     // Configure replacement
-    Ranking<{{SolutionType}}> ranking = new {{Ranking}}<>();
-    DensityEstimator<{{SolutionType}}> densityEstimator = new {{DensityEstimator}}<>();
-    Replacement<{{SolutionType}}> replacement = new RankingAndDensityEstimatorReplacement<>(ranking, densityEstimator, Replacement.RemovalPolicy.ONE_SHOT);
+    Ranking<DoubleSolution> ranking = new FastNonDominatedSortRanking<>();
+    DensityEstimator<DoubleSolution> densityEstimator = new CrowdingDistanceDensityEstimator<>();
+    Replacement<DoubleSolution> replacement = new RankingAndDensityEstimatorReplacement<>(ranking, densityEstimator, Replacement.RemovalPolicy.ONE_SHOT);
 
     // Configure variation
-    int offspringPopulationSize = {{OffspringPopulationSize}};
-    Variation<{{SolutionType}}> variation = new {{VariationType}}<>(offspringPopulationSize, crossover, mutation);
+    int offspringPopulationSize = 100;
+    Variation<DoubleSolution> variation = new CrossoverAndMutationVariation<>(offspringPopulationSize, crossover, mutation);
 
     // Configure selection operator
-    int tournamentSize = {{TournamentSize}};
-    Selection<{{SolutionType}}> selection = new {{Selection}}<>(
+    int tournamentSize = 2;
+    Selection<DoubleSolution> selection = new NaryTournamentSelection<>(
             tournamentSize,
             variation.getMatingPoolSize(),
             new MultiComparator<>(
