@@ -6,7 +6,7 @@ import org.uma.jmetal.component.algorithm.EvolutionaryAlgorithm;
 import org.uma.jmetal.component.catalogue.common.solutionscreation.SolutionsCreation;
 import org.uma.jmetal.component.catalogue.common.solutionscreation.impl.{{SolutionCreation}};
 import org.uma.jmetal.component.catalogue.common.evaluation.Evaluation;
-import org.uma.jmetal.component.catalogue.common.evaluation.impl.{{EvaluationType}};
+import org.uma.jmetal.component.catalogue.common.evaluation.impl.*;
 import org.uma.jmetal.component.catalogue.common.termination.Termination;
 import org.uma.jmetal.component.catalogue.common.termination.impl.{{Termination}};
 import org.uma.jmetal.component.catalogue.ea.replacement.Replacement;
@@ -43,9 +43,7 @@ public class {{Filename}} {
   public static void main(String[] args) throws JMetalException, IOException {
     // Problem configuration
     String problemName = "{{ProblemName}}";
-    {% if ReferenceParetoFront %}
-    String referenceParetoFront = "{{ReferenceParetoFront}}";
-    {% endif %}
+    String referenceParetoFront = {% if ReferenceParetoFront %}"{{ReferenceParetoFront}}"{% else %}null{% endif %};
 
     Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
 
@@ -57,7 +55,21 @@ public class {{Filename}} {
     SolutionsCreation<{{SolutionType}}> createInitialPopulation = new {{SolutionCreation}}<>(problem, populationSize);
 
     // Configure evaluation
-    Evaluation<{{SolutionType}}> evaluation = new {{EvaluationType}}<>(problem);
+    {% if SequentialEvaluation %}
+      {% if WithArchive %}
+    Archive<{{SolutionType}}> externalArchive = new BestSolutionsArchive<>(new NonDominatedSolutionListArchive<>(), populationSize);
+    Evaluation<{{SolutionType}}> evaluation = new SequentialEvaluationWithArchive<>(problem, externalArchive);
+      {% else %}
+    Evaluation<{{SolutionType}}> evaluation = new SequentialEvaluation<>(problem);
+      {% endif %}
+    {% elif MultiThreadedEvaluation %}
+    {% if WithArchive %}
+    Archive<{{SolutionType}}> externalArchive = new BestSolutionsArchive<>(new NonDominatedSolutionListArchive<>(), populationSize);
+    Evaluation<{{SolutionType}}> evaluation = new MultiThreadedEvaluationWithArchive<>({{NumberOfThreads}}, problem, externalArchive);
+      {% else %}
+    Evaluation<{{SolutionType}}> evaluation = new MultiThreadedEvaluation<>({{NumberOfThreads}}, problem);
+      {% endif %}
+    {% endif %}
 
     // Configure termination condition
     {% if TerminationByComputingTime %}

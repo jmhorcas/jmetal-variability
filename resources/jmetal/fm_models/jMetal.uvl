@@ -3,9 +3,16 @@ imports
 features
     jMetal
         optional
-            EvaluationObserver
+            Observer {abstract}
                 mandatory
-                    Integer EvaluationObserverFrequency
+                    ObserverType {abstract}
+                        or
+                            EvaluationObserver
+                                mandatory
+                                    Integer EvaluationObserverFrequency
+                            RunTimeChartObserver
+                            IndicatorPlotObserver
+                    
         mandatory
             Problem
                 mandatory

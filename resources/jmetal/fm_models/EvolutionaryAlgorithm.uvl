@@ -52,7 +52,7 @@ features
                             DifferentialEvolutionCrossoverVariation
                     Integer OffspringPopulationSize {constraint OffspringPopulationSize > 0}
                     CrossoverOperator
-                        mandatory
+                        optional
                             CrossoverType {abstract}
                                 alternative
                                     SBXCrossover
@@ -90,6 +90,10 @@ features
                                     InversionMutation
                                     SimpleInversionMutation
                             Real MutationProbability {constraint MutationProbability >= 0.0 & MutationProbability <= 2.0}
+                        optional
+                            optional
+                            Real MutationPerturbation {constraint MutationPerturbation >= 0.0 & MutationPerturbation <= 1.0}
+                            Real MutationDistributionIndex {constraint MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0}
             Replacement
                 mandatory
                     ReplacementType {abstract}
