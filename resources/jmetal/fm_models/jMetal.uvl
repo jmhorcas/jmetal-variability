@@ -12,7 +12,6 @@ features
                                     Integer EvaluationObserverFrequency
                             RunTimeChartObserver
                             IndicatorPlotObserver
-                    
         mandatory
             Problem
                 mandatory
@@ -43,7 +42,7 @@ features
                                     FakeIntegerPermutationProblem
                             SequenceProblem
                     Integer Length
-            Solution  // Encoding
+            Solution
                 mandatory
                     SolutionType {abstract}
                         alternative
@@ -104,8 +103,8 @@ features
 constraints
     FakeBinaryProblem => NumberOfObjectives == 2
     FakeBinaryProblem => NumberOfConstraints == 0
-    FakeBinaryProblem => ProblemName == "Fake binary problem" 
-    FakeIntegerPermutationProblem => ProblemName == "FakeIntegerPermutationProblem"
+    FakeBinaryProblem => ProblemName == 'Fake binary problem' 
+    FakeIntegerPermutationProblem => ProblemName == 'FakeIntegerPermutationProblem'
     FakeIntegerPermutationProblem => NumberOfConstraints == 0
     Length <=> (PermutationProblem | SequenceProblem)
     DoubleProblem <=> DoubleSolution

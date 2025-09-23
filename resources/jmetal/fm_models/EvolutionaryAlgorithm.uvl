@@ -1,7 +1,7 @@
 features
     EvolutionaryAlgorithm
         mandatory
-            String AlgorithmName
+            String AlgorithmName {default 'NSGAII'}
             InitialPopulationCreation
                 mandatory
                     SolutionCreation
@@ -91,7 +91,6 @@ features
                                     SimpleInversionMutation
                             Real MutationProbability {default 1.0, constraint MutationProbability >= 0.0 & MutationProbability <= 2.0}
                         optional
-                            optional
                             Real MutationPerturbation {default 0.9, constraint MutationPerturbation >= 0.0 & MutationPerturbation <= 1.0}
                             Real MutationDistributionIndex {default 20.0, constraint MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0}
             Replacement
