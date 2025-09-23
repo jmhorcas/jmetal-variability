@@ -6,23 +6,23 @@ features
                 mandatory
                     SolutionCreation
                         alternative
-                            RandomSolutionsCreation
+                            RandomSolutionsCreation {default}
                             ScatterSearchSolutionsCreation {incomplete}
                             LatinHypercubeSamplingSolutionsCreation {incomplete}
-                    Integer PopulationSize {constraint PopulationSize > 0}
+                    Integer PopulationSize {default 100, constraint PopulationSize > 0}
             Evaluation
                 mandatory
                     EvaluationType {abstract}
                         alternative
-                            SequentialEvaluation
+                            SequentialEvaluation {default}
                             MultiThreadedEvaluation
                                 mandatory
-                                    Integer NumberOfThreads {constraint NumberOfThreads >= 0}
+                                    Integer NumberOfThreads {default 2, constraint NumberOfThreads >= 0}
                 optional
                     WithArchive {incomplete}
             Termination
                 alternative
-                    TerminationByEvaluations
+                    TerminationByEvaluations {default}
                         mandatory
                             Integer MaxNumberOfEvaluations {default 25000, constraint MaxNumberOfEvaluations >= 0}
                     TerminationByComputingTime
@@ -39,7 +39,7 @@ features
                 alternative
                     RandomSelection
                     NaryRandomSelection
-                    NaryTournamentSelection
+                    NaryTournamentSelection {default}
                         mandatory
                             Integer TournamentSize {default 2}
                     BinaryTournamentSelection
@@ -48,7 +48,7 @@ features
                 mandatory
                     VariationType {abstract}
                         alternative
-                            CrossoverAndMutationVariation
+                            CrossoverAndMutationVariation {default}
                             DifferentialEvolutionCrossoverVariation
                     Integer OffspringPopulationSize {constraint OffspringPopulationSize > 0}
                     CrossoverOperator
@@ -71,7 +71,7 @@ features
                                     PositionBasedCrossover
                                     EdgeRecombinationCrossover
                                     DifferentialEvolutionCrossover {incomplete}
-                            Real CrossoverProbability {constraint CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0}
+                            Real CrossoverProbability {default 0.9, constraint CrossoverProbability >= 0.0 & CrossoverProbability <= 1.0}
                     MutationOperator
                         mandatory
                             MutationType {abstract}
@@ -89,26 +89,26 @@ features
                                     ScrambleMutation
                                     InversionMutation
                                     SimpleInversionMutation
-                            Real MutationProbability {constraint MutationProbability >= 0.0 & MutationProbability <= 2.0}
+                            Real MutationProbability {default 1.0, constraint MutationProbability >= 0.0 & MutationProbability <= 2.0}
                         optional
                             optional
-                            Real MutationPerturbation {constraint MutationPerturbation >= 0.0 & MutationPerturbation <= 1.0}
-                            Real MutationDistributionIndex {constraint MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0}
+                            Real MutationPerturbation {default 0.9, constraint MutationPerturbation >= 0.0 & MutationPerturbation <= 1.0}
+                            Real MutationDistributionIndex {default 20.0, constraint MutationDistributionIndex >= 5.0 & MutationDistributionIndex <= 400.0}
             Replacement
                 mandatory
                     ReplacementType {abstract}
                         alternative
-                            RankingAndDensityEstimatorReplacement
+                            RankingAndDensityEstimatorReplacement {default}
                                 mandatory
                                     Ranking
                                         alternative
-                                            FastNonDominatedSortRanking
+                                            FastNonDominatedSortRanking {default}
                                             ExperimentalFastNonDominanceRanking
                                             MergeNonDominatedSortRanking
                                             StrengthRanking
                                     DensityEstimator
                                         alternative 
-                                            CrowdingDistanceDensityEstimator
+                                            CrowdingDistanceDensityEstimator {default}
                                             CosineSimilarityDensityEstimator
                                             GridDensityEstimator
                                             HypervolumeContributionDensityEstimator

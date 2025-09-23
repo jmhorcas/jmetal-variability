@@ -74,15 +74,15 @@ features
                 mandatory
                     AlgorithmType {abstract}
                         alternative 
-                            EvolutionaryAlgorithm
+                            EvolutionaryAlgorithm {default}
                                 mandatory
-                                    EvolutionaryAlgorithmType {abstract}
+                                    EvolutionaryAlgorithmType {abstract, default}
                                         alternative 
                                             GeneticAlgorithm
                                                 mandatory
-                                                    GeneticAlgorithmType {abstract}
+                                                    GeneticAlgorithmType {abstract, default}
                                                         alternative
-                                                            NSGAII {desc 'Nondominated Sorting Genetic Algorithm version II'}
+                                                            NSGAII {default, desc 'Nondominated Sorting Genetic Algorithm version II'}
                                                                 optional
                                                                     NSGAIIVersion
                                                                         alternative 
