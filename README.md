@@ -24,3 +24,13 @@
 - El parámetro común de todos los crossover es el "crossover probability". Por lo tanto, todos los crossover deberían tener un constructor que reciba solo el crossover probability.
 - Para el resto de parámetros, se añade un setter y opcionalmente un constructor (si no hay valor por defecto).
 - Si hay valor por defecto, el constructor es opcional.
+
+# How to count files, classes, lines of code:
+*WARNING:* better to use the `evaluation.py` script.
+
+First go to the targe package/module.
+
+- Files: `find . -name "*.java" | wc -l`
+- Classes: `grep -r "class " --include="*.java" . | wc -l`
+- Lines of code: `find . -type f -name "*.java" | xargs wc -l`
+

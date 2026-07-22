@@ -4,28 +4,28 @@ import java.util.Arrays;
 import java.util.Comparator;
 import org.uma.jmetal.component.algorithm.EvolutionaryAlgorithm;
 import org.uma.jmetal.component.catalogue.common.solutionscreation.SolutionsCreation;
-import org.uma.jmetal.component.catalogue.common.solutionscreation.impl.RandomSolutionsCreation;
+import org.uma.jmetal.component.catalogue.common.solutionscreation.impl.;
 import org.uma.jmetal.component.catalogue.common.evaluation.Evaluation;
 import org.uma.jmetal.component.catalogue.common.evaluation.impl.*;
 import org.uma.jmetal.component.catalogue.common.termination.Termination;
-import org.uma.jmetal.component.catalogue.common.termination.impl.TerminationByEvaluations;
+import org.uma.jmetal.component.catalogue.common.termination.impl.;
 import org.uma.jmetal.component.catalogue.ea.replacement.Replacement;
 import org.uma.jmetal.component.catalogue.ea.replacement.impl.RankingAndDensityEstimatorReplacement;
 import org.uma.jmetal.component.catalogue.ea.selection.Selection;
-import org.uma.jmetal.component.catalogue.ea.selection.impl.NaryTournamentSelection;
+import org.uma.jmetal.component.catalogue.ea.selection.impl.;
 import org.uma.jmetal.component.catalogue.ea.variation.Variation;
-import org.uma.jmetal.component.catalogue.ea.variation.impl.CrossoverAndMutationVariation;
-import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
-import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
+import org.uma.jmetal.component.catalogue.ea.variation.impl.;
+import org.uma.jmetal.operator.crossover.impl.;
+import org.uma.jmetal.operator.mutation.impl.;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.problem.ProblemFactory;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.comparator.MultiComparator;
 import org.uma.jmetal.util.densityestimator.DensityEstimator;
-import org.uma.jmetal.util.densityestimator.impl.CrowdingDistanceDensityEstimator;
+import org.uma.jmetal.util.densityestimator.impl.;
 import org.uma.jmetal.util.ranking.Ranking;
-import org.uma.jmetal.util.ranking.impl.FastNonDominatedSortRanking;
+import org.uma.jmetal.util.ranking.impl.;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.errorchecking.JMetalException;
 import org.uma.jmetal.util.fileoutput.SolutionListOutput;
@@ -36,7 +36,7 @@ import org.uma.jmetal.util.VectorUtils;
 import org.uma.jmetal.qualityindicator.QualityIndicatorUtils;
 
 
-public class NSGAIIDefaultConfiguration {
+public class NSGAIIDefaultConfiguration_ZDT1_scenario1 {
 
   public static void main(String[] args) throws JMetalException, IOException {
     // Problem configuration
@@ -50,36 +50,36 @@ public class NSGAIIDefaultConfiguration {
 
     // Configure initial population creation
     int populationSize = 100;
-    SolutionsCreation<DoubleSolution> createInitialPopulation = new RandomSolutionsCreation<>(problem, populationSize);
+    SolutionsCreation<> createInitialPopulation = new <>(problem, populationSize);
 
     // Configure evaluation
-    Evaluation<DoubleSolution> evaluation = new SequentialEvaluation<>(problem);
+    Evaluation<> evaluation = new SequentialEvaluation<>(problem);
 
     // Configure termination condition
     Termination termination = new TerminationByEvaluations(25000);
 
     // Configure the crossover operator
     double crossoverProbability = 0.9;
-    SBXCrossover crossover = new SBXCrossover(crossoverProbability);
+     crossover = new (crossoverProbability);
     crossover.distributionIndex(20.0);
 
     // Configure the mutation operator
     double mutationProbability = 1.0 / problem.numberOfVariables();
-    PolynomialMutation mutation = new PolynomialMutation(mutationProbability);
+     mutation = new (mutationProbability);
     mutation.setDistributionIndex(20.0);
 
     // Configure replacement
-    Ranking<DoubleSolution> ranking = new FastNonDominatedSortRanking<>();
-    DensityEstimator<DoubleSolution> densityEstimator = new CrowdingDistanceDensityEstimator<>();
-    Replacement<DoubleSolution> replacement = new RankingAndDensityEstimatorReplacement<>(ranking, densityEstimator, Replacement.RemovalPolicy.ONE_SHOT);
+    Ranking<> ranking = new <>();
+    DensityEstimator<> densityEstimator = new <>();
+    Replacement<> replacement = new RankingAndDensityEstimatorReplacement<>(ranking, densityEstimator, Replacement.RemovalPolicy.ONE_SHOT);
 
     // Configure variation
     int offspringPopulationSize = 100;
-    Variation<DoubleSolution> variation = new CrossoverAndMutationVariation<>(offspringPopulationSize, crossover, mutation);
+    Variation<> variation = new <>(offspringPopulationSize, crossover, mutation);
 
     // Configure selection operator
     int tournamentSize = 2;
-    Selection<DoubleSolution> selection = new NaryTournamentSelection<>(
+    Selection<> selection = new <>(
             tournamentSize,
             variation.getMatingPoolSize(),
             new MultiComparator<>(

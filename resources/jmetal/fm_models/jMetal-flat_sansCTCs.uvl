@@ -1,0 +1,248 @@
+features
+	jMetal 
+		optional
+			Observer {abstract}
+				mandatory
+					ObserverType {abstract}
+						or
+							EvaluationObserver 
+								mandatory
+									Integer EvaluationObserverFrequency 
+							RunTimeChartObserver 
+							IndicatorPlotObserver 
+		mandatory
+			Problem 
+				mandatory
+					Integer NumberOfVariables 
+				mandatory
+					Integer NumberOfObjectives 
+				mandatory
+					Integer NumberOfConstraints 
+				mandatory
+					String ProblemName 
+				optional
+					String ReferenceParetoFront 
+				optional
+					DynamicProblem 
+				optional
+					ProblemType {abstract}
+						alternative
+							BinaryProblem 
+								mandatory
+									Integer TotalNumberOfBits 
+								mandatory
+									Integer NumberOfBitsPerVariable cardinality [1..*] 
+								optional
+									FakeBinaryProblem 
+							DoubleProblem 
+								optional
+									FakeDoubleProblem 
+								optional
+									ComposableDoubleProblem 
+							IntegerProblem 
+								optional
+									FakeIntegerProblem 
+							PermutationProblem 
+								optional
+									FakeIntegerPermutationProblem 
+							SequenceProblem 
+				optional
+					Integer Length 
+		mandatory
+			Solution 
+				mandatory
+					SolutionType {abstract}
+						alternative
+							BinarySolution 
+								optional
+									DefaultBinarySolution 
+							CompositeSolution 
+							DoubleSolution 
+								optional
+									DefaultDoubleSolution 
+								optional
+									RepairDoubleSolution 
+										alternative
+											RepairDoubleSolutionWithBoundValue 
+											RepairDoubleSolutionWithOppositeBoundValue 
+											RepairDoubleSolutionWithRandomValue 
+							IntegerSolution 
+								optional
+									DefaultIntegerSolution 
+							PermutationSolution 
+								optional
+									IntegerPermutationSolution 
+							PointSolution 
+							SequenceSolution 
+								optional
+									CharSequenceSolution 
+		mandatory
+			Algorithm 
+				mandatory
+					AlgorithmType {abstract}
+						alternative
+							EvolutionaryAlgorithm {default}
+								mandatory
+									EvolutionaryAlgorithmType {abstract, default}
+										alternative
+											GeneticAlgorithm 
+												mandatory
+													GeneticAlgorithmType {abstract, default}
+														alternative
+															NSGAII {default, desc 'Nondominated Sorting Genetic Algorithm version II'}
+																optional
+																	NSGAIIVersion 
+																		alternative
+																			SteadyStateNSGAII {desc 'Steady-State NSGA-II'}
+																			NSGAIIMeasures {desc 'NSGA-II with measures'}
+																			DNSGAII {desc 'DIR based NSGA-II'}
+															NSGAIII 
+															IBEA {desc 'Indicator Based Evolutionary Algorithm'}
+															MOEA 
+											DifferentialEvolution 
+											EvolutionStrategy 
+								mandatory
+									Configuration {abstract}
+										mandatory
+											EvolutionaryAlgorithm 
+												mandatory
+													String AlgorithmName {default 'NSGAII'}
+												mandatory
+													InitialPopulationCreation 
+														mandatory
+															SolutionCreation 
+																alternative
+																	RandomSolutionsCreation {default}
+																	ScatterSearchSolutionsCreation {incomplete}
+																	LatinHypercubeSamplingSolutionsCreation {incomplete}
+														mandatory
+															Integer PopulationSize {default 100}
+												mandatory
+													Evaluation 
+														mandatory
+															EvaluationType {abstract}
+																alternative
+																	SequentialEvaluation {default}
+																	MultiThreadedEvaluation 
+																		mandatory
+																			Integer NumberOfThreads {default 2}
+														optional
+															WithArchive {incomplete}
+												mandatory
+													Termination 
+														alternative
+															TerminationByEvaluations {default}
+																mandatory
+																	Integer MaxNumberOfEvaluations {default 25000}
+															TerminationByComputingTime 
+																mandatory
+																	Integer MaxComputingTime {default 2500, unit 's'}
+															TerminationByKeyboard 
+															TerminationByQualityIndicator 
+																mandatory
+																	QualityIndicator {incomplete}
+																mandatory
+																	ReferenceFront {incomplete}
+																mandatory
+																	Real Percentage
+																mandatory
+																	Integer EvaluationsLimit
+												mandatory
+													Selection 
+														alternative
+															RandomSelection 
+															NaryRandomSelection 
+															NaryTournamentSelection {default}
+																mandatory
+																	Integer TournamentSize {default 2}
+															BinaryTournamentSelection 
+															PopulationAndNeighborhoodSelection {incomplete}
+												mandatory
+													Variation 
+														mandatory
+															VariationType {abstract}
+																alternative
+																	CrossoverAndMutationVariation {default}
+																	DifferentialEvolutionCrossoverVariation 
+														mandatory
+															Integer OffspringPopulationSize
+														mandatory
+															CrossoverOperator 
+																optional
+																	CrossoverType {abstract}
+																		alternative
+																			SBXCrossover 
+																				mandatory
+																					Real CrossoverDistributionIndex {default 20.0}
+																			BLXAlphaCrossover 
+																				mandatory
+																					Real BLXAlphaValue {default 0.5}
+																			WholeArithmeticCrossover 
+																			HUXCrossover 
+																			UniformCrossover 
+																			SinglePointCrossover 
+																			PMXCrossover 
+																			CycleCrossover 
+																			OXDCrossover 
+																			PositionBasedCrossover 
+																			EdgeRecombinationCrossover 
+																			DifferentialEvolutionCrossover {incomplete}
+																optional
+																	Real CrossoverProbability {default 0.9}
+														mandatory
+															MutationOperator 
+																mandatory
+																	MutationType {abstract}
+																		alternative
+																			UniformMutation 
+																			NonUniformMutation 
+																				mandatory
+																					Integer MaxIterations
+																			PolynomialMutation 
+																			LinkedPolynomialMutation 
+																			BitFlipMutation 
+																			PermutationSwapMutation 
+																			DisplacementMutation 
+																			InsertMutation 
+																			ScrambleMutation 
+																			InversionMutation 
+																			SimpleInversionMutation 
+																mandatory
+																	Real MutationProbability {default 1.0}
+																optional
+																	Real MutationPerturbation {default 0.9}
+																optional
+																	Real MutationDistributionIndex {default 20.0}
+												mandatory
+													Replacement 
+														mandatory
+															ReplacementType {abstract}
+																alternative
+																	RankingAndDensityEstimatorReplacement {default}
+																		mandatory
+																			Ranking 
+																				alternative
+																					FastNonDominatedSortRanking {default}
+																					ExperimentalFastNonDominanceRanking 
+																					MergeNonDominatedSortRanking 
+																					StrengthRanking 
+																		mandatory
+																			DensityEstimator 
+																				alternative
+																					CrowdingDistanceDensityEstimator {default}
+																					CosineSimilarityDensityEstimator 
+																					GridDensityEstimator 
+																					HypervolumeContributionDensityEstimator 
+																					KnnDensityEstimator 
+																					SpatialSpreadDeviationDensityEstimator 
+																					StrenghtRawFitnessDensityEstimator 
+																	SingleSolutionReplacement 
+																	PairwiseReplacement 
+																	MuPlusLambdaReplacement 
+																	MuCommaLambdaReplacement 
+																	MOEADReplacement 
+																	SMSEMOAReplacement 
+							LocalSearch 
+							ScatterSearch 
+							CoralReefsOptimization 
+							ParticleSwarmOptimization

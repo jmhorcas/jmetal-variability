@@ -1,0 +1,27 @@
+{
+  "file": "EvolutionaryAlgorithm.uvl",
+  "config": {
+    "ProblemName": "org.uma.jmetal.problem.multiobjective.Kursawe",
+    "ReferenceParetoFront": "jMetal/resources/referenceFrontsCSV/Kursawe.csv",
+    "DoubleSolution": true,
+    "AlgorithmName": "NSGAII",
+    "RandomSolutionsCreation": true,
+    "PopulationSize": 200,
+    "SequentialEvaluation": true,
+    "TerminationByComputingTime": true,
+    "MaxComputingTime": 300,
+    "NaryTournamentSelection": true,
+    "TournamentSize": 2,
+    "CrossoverAndMutationVariation": true,
+    "OffspringPopulationSize": 200,
+    "BLXAlphaCrossover": true,
+    "CrossoverProbability": 0.9,
+    "BLXAlphaValue": 20.0,
+    "PolynomialMutation": true,
+    "MutationProbability": 1.0,
+    "MutationDistributionIndex": 20.0,
+    "RankingAndDensityEstimatorReplacement": true,
+    "FastNonDominatedSortRanking": true,
+    "CrowdingDistanceDensityEstimator": true
+  }
+}

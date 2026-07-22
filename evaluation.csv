@@ -1,0 +1,13 @@
+Module, Files, Classes, LOCs
+jmetal-core, 333, 275, 17168
+jmetal-algorithm (exclude examples), 119, 118, 16113
+jmetal-component (exclude examples), 74, 57, 3240
+jmetal-component (exclude examples and builders), 65, 48, 2369
+jmetal-auto (exclude examples studies), 60, 65, 3857
+Evolver (exclude examples), 77, 80, 4692
+evolver2 (exclude examples), 45, 43, 2613
+
+
+
+
+

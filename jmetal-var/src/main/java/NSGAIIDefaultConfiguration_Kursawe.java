@@ -36,12 +36,12 @@ import org.uma.jmetal.util.VectorUtils;
 import org.uma.jmetal.qualityindicator.QualityIndicatorUtils;
 
 
-public class NSGAIIDefaultConfiguration {
+public class NSGAIIDefaultConfiguration_Kursawe {
 
   public static void main(String[] args) throws JMetalException, IOException {
     // Problem configuration
-    String problemName = "org.uma.jmetal.problem.multiobjective.zdt.ZDT1";
-    String referenceParetoFront = "jMetal/resources/referenceFrontsCSV/ZDT1.csv";
+    String problemName = "org.uma.jmetal.problem.multiobjective.Kursawe";
+    String referenceParetoFront = "jMetal/resources/referenceFrontsCSV/Kursawe.csv";
 
     Problem<DoubleSolution> problem = ProblemFactory.<DoubleSolution>loadProblem(problemName);
 
